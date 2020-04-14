@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { ListGroup, Row, Col, Card, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { API } from "aws-amplify";
 import "./Home.css";
@@ -29,36 +29,42 @@ export default function Home(props) {
   }
 
   function renderColumnistsList(columnists) {
-    return [{}].concat(columnists).map((columnist, i) =>
-      i !== 0 ? (
-        <LinkContainer key={columnist.columnistId} to=
-          {`/columnists/${columnist.columnistId}`}>
-          <ListGroupItem header={columnist.content.trim().split("\n")[0]}>
-            {"Criado em: " + new Date(columnist.createAt).toLocaleString()}
-          </ListGroupItem>
-        </LinkContainer>
-      ) : (
-          <LinkContainer key="new" to="/columnists/new">
-            <ListGroupItem>
-              <h4><b>{"\uFF0B"}</b> Adicionar Colunista</h4>
-            </ListGroupItem>
-          </LinkContainer>
-        )
+    return (
+      <Row>
+        {
+          columnists.map((columnist) =>
+            (<Col key={columnist.columnistId} xs={12} md={4}>
+              <Card style={{ marginBottom: 15 }}>
+                <Card.Img variant="top" src="https://picsum.photos/300/200" />
+                <Card.Body>
+                  <Card.Title>{columnist.content.trim().split("\n")[0]}</Card.Title>
+                  <Card.Text>
+                    {"Criado em: " + new Date(columnist.createAt).toLocaleString()}
+                  </Card.Text>
+                  <LinkContainer key={columnist.columnistId} to={`/columnists/${columnist.columnistId}`}>
+                    <Button variant="primary">Editar</Button>
+                  </LinkContainer>
+                </Card.Body>
+              </Card>
+            </Col>)
+          )
+        }
+      </Row>
     );
   }
 
   function renderLander() {
     return (<div className="lander">
-      <h1>Scratch</h1>
-      <p>A simple columists taking app</p>
+      <h1>App Total</h1>
+      <p>Gerenciamento de Dados</p>
     </div>
     );
   }
 
   function renderColumnists() {
     return (
-      <div className="columists">
-        <PageHeader>Colunistas</PageHeader>
+      <div className="container columists">
+        <h1 className="lander">Colunistas</h1>
         <ListGroup>
           {!isLoading && renderColumnistsList(columists)}
         </ListGroup>

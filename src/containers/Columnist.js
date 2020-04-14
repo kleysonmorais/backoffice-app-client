@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { API, Storage } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
@@ -108,17 +108,17 @@ export default function Columnist(props) {
       {columnist && (
         <form onSubmit={handleSubmit}>
 
-          <FormGroup controlId="content">
-            <FormControl value={content}
+          <Form.Group controlId="content">
+            <Form.Control value={content}
               componentClass="textarea"
               onChange={e => setContent(e.target.value)}
             />
-          </FormGroup>
+          </Form.Group>
 
           {columnist.attachment && (
-            <FormGroup>
-              <ControlLabel>Attachment</ControlLabel>
-              <FormControl.Static>
+            <Form.Group>
+              <Form.Label>Attachment</Form.Label>
+              <Form.Control.Static>
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -126,19 +126,18 @@ export default function Columnist(props) {
                 >
                   {formatFilename(columnist.attachment)}
                 </a>
-              </FormControl.Static>
-            </FormGroup>
+              </Form.Control.Static>
+            </Form.Group>
           )}
 
-          <FormGroup controlId="file">
-            {!columnist.attachment && <ControlLabel>Attachment</ControlLabel>}
-            <FormControl onChange={handleFileChange} type="file" />
-          </FormGroup>
+          <Form.Group controlId="file">
+            {!columnist.attachment && <Form.Label>Attachment</Form.Label>}
+            <Form.Control onChange={handleFileChange} type="file" />
+          </Form.Group>
 
           <LoaderButton
             block
             type="submit"
-            bsSize="large"
             bsStyle="primary"
             isLoading={isLoading}
             disabled={!validateForm()}
@@ -148,7 +147,6 @@ export default function Columnist(props) {
 
           <LoaderButton
             block
-            bsSize="large"
             bsStyle="danger"
             onClick={handleDelete}
             isLoading={isDeleting}
