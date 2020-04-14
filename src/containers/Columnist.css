@@ -1,0 +1,7 @@
+.Columnist form {
+  padding-bottom: 15px;
+}
+.Columnist form textarea {
+  height: 300px;
+  font-size: 24px;
+}
