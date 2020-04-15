@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ListGroup, Row, Col, Card, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { API } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 import "./Home.css";
 
 export default function Home(props) {
-  const [columists, setColumists] = useState([]);
+  const [columnists, setColumnists] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -14,8 +14,16 @@ export default function Home(props) {
         return;
       }
       try {
-        const columists = await loadColumnists();
-        setColumists(columists);
+        const columnists = await loadColumnists();
+        for (let index = 0; index < columnists.length; index++) {
+          const columnist = columnists[index];
+          if (columnist.attachment) {
+            columnist.attachmentUrl = await Storage.vault.get(
+              columnist.attachment
+            );
+          }
+        }
+        setColumnists(columnists);
       } catch (e) {
         alert(e);
       }
@@ -31,51 +39,73 @@ export default function Home(props) {
   function renderColumnistsList(columnists) {
     return (
       <Row>
-        {
-          columnists.map((columnist) =>
-            (<Col key={columnist.columnistId} xs={12} md={4}>
-              <Card style={{ marginBottom: 15 }}>
-                <Card.Img variant="top" src="https://picsum.photos/300/200" />
-                <Card.Body>
-                  <Card.Title>{columnist.content.trim().split("\n")[0]}</Card.Title>
-                  <Card.Text>
-                    {"Criado em: " + new Date(columnist.createAt).toLocaleString()}
-                  </Card.Text>
-                  <LinkContainer key={columnist.columnistId} to={`/columnists/${columnist.columnistId}`}>
+        {columnists.map((columnist) => (
+          <Col key={columnist.columnistId} xs={12} md={4}>
+            <Card style={{ marginBottom: 15 }}>
+              {columnist.attachmentUrl && (
+                <Card.Img variant="top" src={columnist.attachmentUrl} />
+              )}
+              <Card.Body>
+                <Card.Title>{`${columnist.firstName} ${columnist.lastName}`}</Card.Title>
+                <Card.Text>{`ID: ${columnist.id}`}</Card.Text>
+                <Card.Text>
+                  {`Criado em: ${new Date(
+                    columnist.createdAt
+                  ).toLocaleString()}`}
+                </Card.Text>
+                <Card.Text>
+                  {`Atualizado em:${new Date(
+                    columnist.updatedAt
+                  ).toLocaleString()}`}
+                </Card.Text>
+                <LinkContainer
+                  key={columnist.columnistId}
+                  to={`/columnists/${columnist.columnistId}`}
+                >
+                  <div className="text-right">
                     <Button variant="primary">Editar</Button>
-                  </LinkContainer>
-                </Card.Body>
-              </Card>
-            </Col>)
-          )
-        }
+                  </div>
+                </LinkContainer>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
       </Row>
     );
   }
 
   function renderLander() {
-    return (<div className="lander">
-      <h1>App Total</h1>
-      <p>Gerenciamento de Dados</p>
-    </div>
+    return (
+      <div className="lander">
+        <h1>App Total</h1>
+        <p>Gerenciamento de Dados</p>
+      </div>
     );
   }
 
   function renderColumnists() {
     return (
-      <div className="container columists">
-        <h1 className="lander">Colunistas</h1>
-        <ListGroup>
-          {!isLoading && renderColumnistsList(columists)}
-        </ListGroup>
+      <div className="container">
+        <div className="row m-5">
+          <Col className="text-right">
+            <h1 className="lander">Colunistas</h1>
+          </Col>
+          <Col className="text-left m-2">
+            <LinkContainer to="/columnists/new">
+              <Button type="button" variant="outline-dark">
+                Adicionar
+              </Button>
+            </LinkContainer>
+          </Col>
+        </div>
+        <ListGroup>{!isLoading && renderColumnistsList(columnists)}</ListGroup>
       </div>
     );
   }
 
   return (
     <div className="Home">
-      {props.isAuthenticated ? renderColumnists() :
-        renderLander()}
+      {props.isAuthenticated ? renderColumnists() : renderLander()}
     </div>
   );
 }
