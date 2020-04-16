@@ -38,21 +38,23 @@ function App(props) {
         <Container>
           <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
             <LinkContainer to="/">
-              <Navbar.Brand >Backoffice App Total</Navbar.Brand>
+              <Navbar.Brand>Backoffice App Total</Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav>
-                {isAuthenticated ?
-                  (<Nav.Link onClick={handleLogout}>Logout</Nav.Link>) :
-                  (<>
-                    <LinkContainer to="/signup">
+                {isAuthenticated ? (
+                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                ) : (
+                  <>
+                    {/* <LinkContainer to="/signup">
                       <Nav.Link>Signup</Nav.Link>
-                    </LinkContainer>
+                    </LinkContainer> */}
                     <LinkContainer to="/login">
-                      <Nav.Link>Login</Nav.Link>
+                      <Nav.Link>Entrar</Nav.Link>
                     </LinkContainer>
-                  </>)}
+                  </>
+                )}
               </Nav>
             </Navbar.Collapse>
           </Navbar>

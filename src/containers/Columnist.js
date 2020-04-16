@@ -22,10 +22,10 @@ export default function Columnist(props) {
     async function onLoad() {
       try {
         const columnist = await loadColumnist();
-        const { id, firstName, lastName } = columnist;
-        // if (attachment) {
-        //   columnist.attachmentURL = await Storage.vault.get(attachment);
-        // }
+        const { id, firstName, lastName, attachment } = columnist;
+        if (attachment) {
+          columnist.attachmentURL = await Storage.vault.get(attachment);
+        }
         setId(id);
         setFirstName(firstName);
         setLastName(lastName);
@@ -37,36 +37,28 @@ export default function Columnist(props) {
     onLoad();
   }, [props.match.params.id]);
 
-  // function formatFilename(str) {
-  //   return str.replace(/^\w+-/, "");
-  // }
-
-  // function handleFileChange(event) {
-  //   file.current = event.target.files[0];
-  // }
-
   async function handleSubmit(event) {
     let attachment;
     event.preventDefault();
 
-    // if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-    //   alert(
-    //     `Please pick a file smaller than
-    //  ${config.MAX_ATTACHMENT_SIZE / 1000000} MB.`
-    //   );
-    //   return;
-    // }
+    if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
+      alert(
+        `Please pick a file smaller than
+     ${config.MAX_ATTACHMENT_SIZE / 1000000} MB.`
+      );
+      return;
+    }
     setIsLoading(true);
 
     try {
-      // if (file.current) {
-      //   attachment = await s3Upload(file.current);
-      // }
+      if (file.current) {
+        attachment = await s3Upload(file.current);
+      }
       await saveColumnist({
         id,
         firstName,
         lastName,
-        // attachment: attachment || columnist.attachment,
+        attachment: attachment || columnist.attachment,
       });
       props.history.push("/");
     } catch (e) {
@@ -117,6 +109,8 @@ export default function Columnist(props) {
           isLoading={isLoading}
           isDeleting={isDeleting}
           handleDelete={handleDelete}
+          file={file}
+          columnist={columnist}
         />
       )}
     </>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ListGroup, Row, Col, Card, Button } from "react-bootstrap";
+import config from "../config";
 import { LinkContainer } from "react-router-bootstrap";
 import { API, Storage } from "aws-amplify";
 import "./Home.css";
@@ -42,9 +43,17 @@ export default function Home(props) {
         {columnists.map((columnist) => (
           <Col key={columnist.columnistId} xs={12} md={4}>
             <Card style={{ marginBottom: 15 }}>
-              {columnist.attachmentUrl && (
-                <Card.Img variant="top" src={columnist.attachmentUrl} />
-              )}
+              <div className="text-center">
+                {columnist.attachmentUrl && (
+                  <img
+                    alt="Capa"
+                    height="250"
+                    className="img-capa"
+                    variant="top"
+                    src={columnist.attachmentUrl}
+                  />
+                )}
+              </div>
               <Card.Body>
                 <Card.Title>{`${columnist.firstName} ${columnist.lastName}`}</Card.Title>
                 <Card.Text>{`ID: ${columnist.id}`}</Card.Text>
@@ -76,9 +85,12 @@ export default function Home(props) {
 
   function renderLander() {
     return (
-      <div className="lander">
+      <div className="lander-main">
         <h1>App Total</h1>
-        <p>Gerenciamento de Dados</p>
+        <p>Personalização de Telas</p>
+        <LinkContainer to="/login">
+          <Button variant="primary">Entrar</Button>
+        </LinkContainer>
       </div>
     );
   }
@@ -86,17 +98,26 @@ export default function Home(props) {
   function renderColumnists() {
     return (
       <div className="container">
-        <div className="row m-5">
-          <Col className="text-right">
+        <div className="row mt-5 mb-5">
+          <div className="col-10 text-center">
             <h1 className="lander">Colunistas</h1>
-          </Col>
-          <Col className="text-left m-2">
             <LinkContainer to="/columnists/new">
               <Button type="button" variant="outline-dark">
                 Adicionar
               </Button>
             </LinkContainer>
-          </Col>
+          </div>
+          <div className="col-2 text-right">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${config.apiGateway.URL}/columnists`}
+            >
+              <Button type="button" variant="outline-success">
+                API
+              </Button>
+            </a>
+          </div>
         </div>
         <ListGroup>{!isLoading && renderColumnistsList(columnists)}</ListGroup>
       </div>

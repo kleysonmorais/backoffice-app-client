@@ -16,15 +16,29 @@ const FormColumnist = ({
   handleDelete,
   isDeleting,
   file,
-  handleFileChange,
+  columnist,
 }) => {
   const validateForm = () => {
     return id.length > 0 && firstName.length > 0 && lastName.length > 0;
   };
 
+  const handleFileChange = (event) => {
+    file.current = event.target.files[0];
+  };
+
   return (
     <div className="Columnist container">
       <form onSubmit={handleSubmit}>
+        {columnist && columnist.attachmentURL && (
+          <div className="text-center">
+            <img
+              src={columnist.attachmentURL}
+              height="250"
+              style={{ maxWidth: "100%" }}
+              alt="Capa"
+            />
+          </div>
+        )}
         <Form.Group controlId="id">
           <Form.Label>ID</Form.Label>
           <Form.Control
@@ -49,6 +63,7 @@ const FormColumnist = ({
             onChange={(evt) => setLastName(evt.target.value)}
           />
         </Form.Group>
+
         <Form.Group controlId="file">
           <Form.Label>Foto de Capa</Form.Label>
           <Form.Control onChange={handleFileChange} type="file" />

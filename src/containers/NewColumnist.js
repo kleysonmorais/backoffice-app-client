@@ -12,14 +12,8 @@ export default function NewColumnist(props) {
   const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleFileChange(event) {
-    file.current = event.target.files[0];
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log("handleSubmit");
-
     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
       alert(`Please pick a file smaller than
         ${config.MAX_ATTACHMENT_SIZE / 1000000} MB.`);
@@ -55,7 +49,6 @@ export default function NewColumnist(props) {
       setLastName={setLastName}
       isLoading={isLoading}
       file={file}
-      handleFileChange={handleFileChange}
     />
   );
 }
