@@ -14,20 +14,20 @@ export default function Home(props) {
       if (!props.isAuthenticated) {
         return;
       }
-      try {
-        const columnists = await loadColumnists();
-        for (let index = 0; index < columnists.length; index++) {
-          const columnist = columnists[index];
-          if (columnist.attachment) {
-            columnist.attachmentUrl = await Storage.vault.get(
-              columnist.attachment
-            );
-          }
-        }
-        setColumnists(columnists);
-      } catch (e) {
-        alert(e);
-      }
+      // try {
+      //   const columnists = await loadColumnists();
+      //   for (let index = 0; index < columnists.length; index++) {
+      //     const columnist = columnists[index];
+      //     if (columnist.attachment) {
+      //       columnist.attachmentUrl = await Storage.vault.get(
+      //         columnist.attachment
+      //       );
+      //     }
+      //   }
+      //   setColumnists(columnists);
+      // } catch (e) {
+      //   alert(e);
+      // }
       setIsLoading(false);
     }
     onLoad();
@@ -86,8 +86,8 @@ export default function Home(props) {
   function renderLander() {
     return (
       <div className="lander-main">
-        <h1>App Total</h1>
-        <p>Personalização de Telas</p>
+        <h1>Cognito Auth</h1>
+        {/* <p>Personalização de Telas</p> */}
         <LinkContainer to="/login">
           <Button variant="primary">Entrar</Button>
         </LinkContainer>
@@ -100,14 +100,14 @@ export default function Home(props) {
       <div className="container">
         <div className="row mt-5 mb-5">
           <div className="col-10 text-center">
-            <h1 className="lander">Colunistas</h1>
-            <LinkContainer to="/columnists/new">
+            <h1 className="lander">Logado</h1>
+            {/* <LinkContainer to="/columnists/new">
               <Button type="button" variant="outline-dark">
                 Adicionar
               </Button>
-            </LinkContainer>
+            </LinkContainer> */}
           </div>
-          <div className="col-2 text-right">
+          {/* <div className="col-2 text-right">
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -117,9 +117,9 @@ export default function Home(props) {
                 API
               </Button>
             </a>
-          </div>
+          </div> */}
         </div>
-        <ListGroup>{!isLoading && renderColumnistsList(columnists)}</ListGroup>
+        {/* <ListGroup>{!isLoading && renderColumnistsList(columnists)}</ListGroup> */}
       </div>
     );
   }

@@ -38,7 +38,7 @@ function App(props) {
         <Container>
           <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
             <LinkContainer to="/">
-              <Navbar.Brand>Backoffice App Total</Navbar.Brand>
+              <Navbar.Brand>POC | Kafka</Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
@@ -47,9 +47,9 @@ function App(props) {
                   <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                 ) : (
                   <>
-                    {/* <LinkContainer to="/signup">
-                      <Nav.Link>Signup</Nav.Link>
-                    </LinkContainer> */}
+                    <LinkContainer to="/signup">
+                      <Nav.Link>Cadastrar</Nav.Link>
+                    </LinkContainer>
                     <LinkContainer to="/login">
                       <Nav.Link>Entrar</Nav.Link>
                     </LinkContainer>

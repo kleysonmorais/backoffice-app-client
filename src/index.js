@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
@@ -20,15 +20,15 @@ Amplify.configure({
     bucket: config.s3.BUCKET,
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
   },
-  API: {
-    endpoints: [
-      {
-        name: "columnist",
-        endpoint: config.apiGateway.URL,
-        region: config.apiGateway.REGION,
-      },
-    ],
-  },
+  // API: {
+  //   endpoints: [
+  //     {
+  //       name: "columnist",
+  //       endpoint: config.apiGateway.URL,
+  //       region: config.apiGateway.REGION,
+  //     },
+  //   ],
+  // },
 });
 
 ReactDOM.render(
